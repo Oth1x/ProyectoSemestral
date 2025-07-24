@@ -57,16 +57,21 @@ public class Combate extends JFrame {
         cargarImagen(lbPokemonImg2, pokemonOponente.getRutaImagen());
         actualizarBarraDeVida(pgbVida1, pokemonJugador.getVida(), pokemonJugador.getVida());
         actualizarBarraDeVida(pgbVida2, pokemonOponente.getVida(), pokemonOponente.getVida());
-        if (pokemonJugador.getAtaques().size() > 0) ataque1Button.setText(pokemonJugador.getAtaques().get(0).getNombre());
-        if (pokemonJugador.getAtaques().size() > 1) ataque2Button.setText(pokemonJugador.getAtaques().get(1).getNombre());
-        if (pokemonJugador.getAtaques().size() > 2) ataque3Button.setText(pokemonJugador.getAtaques().get(2).getNombre());
+        if (pokemonJugador.getAtaques().size() > 0)
+            ataque1Button.setText(pokemonJugador.getAtaques().get(0).getNombre());
+        if (pokemonJugador.getAtaques().size() > 1)
+            ataque2Button.setText(pokemonJugador.getAtaques().get(1).getNombre());
+        if (pokemonJugador.getAtaques().size() > 2)
+            ataque3Button.setText(pokemonJugador.getAtaques().get(2).getNombre());
         agregarAlLog("¡Un " + pokemonOponente.getNombre() + " salvaje apareció!");
         agregarAlLog("¡Adelante, " + pokemonJugador.getNombre() + "!");
         setupButtonListeners();
     }
 
     private void cargarImagen(JLabel label, String path) {
-        if (label == null) { return; }
+        if (label == null) {
+            return;
+        }
         java.net.URL imgURL = getClass().getResource(path);
         if (imgURL != null) {
             ImageIcon originalIcon = new ImageIcon(imgURL);
@@ -110,16 +115,13 @@ public class Combate extends JFrame {
         Ataque ataque = pokemonJugador.getAtaques().get(indiceAtaque);
         int dmg = ataque.getDanio();
 
-        // Animación de ataque del jugador y de daño del oponente
         cargarImagen(lbPokemonImg1, pokemonJugador.getRutaImagenAtaque());
         cargarImagen(lbPokemonImg2, pokemonOponente.getRutaImagenDmgRecibido());
 
         Timer timerAnimacion = new Timer(500, e -> {
-            // Volver a las imágenes normales
             cargarImagen(lbPokemonImg1, pokemonJugador.getRutaImagen());
             cargarImagen(lbPokemonImg2, pokemonOponente.getRutaImagen());
 
-            // Aplicar el daño y actualizar log
             int vidaActualOponente = pgbVida2.getValue();
             int nuevaVidaOponente = Math.max(0, vidaActualOponente - dmg);
             actualizarBarraDeVida(pgbVida2, nuevaVidaOponente, pokemonOponente.getVida());
@@ -140,16 +142,13 @@ public class Combate extends JFrame {
             Ataque ataqueOponente = pokemonOponente.getAtaques().get(indiceAtaqueOponente);
             int dmgOponente = ataqueOponente.getDanio();
 
-            // Animación de ataque del oponente y de daño del jugador
             cargarImagen(lbPokemonImg2, pokemonOponente.getRutaImagenAtaque());
             cargarImagen(lbPokemonImg1, pokemonJugador.getRutaImagenDmgRecibido());
 
             Timer timerAnimacionOponente = new Timer(500, e2 -> {
-                // Volver a las imágenes normales
                 cargarImagen(lbPokemonImg2, pokemonOponente.getRutaImagen());
                 cargarImagen(lbPokemonImg1, pokemonJugador.getRutaImagen());
 
-                // Aplicar el daño y actualizar log
                 int vidaActualJugador = pgbVida1.getValue();
                 int nuevaVidaJugador = Math.max(0, vidaActualJugador - dmgOponente);
                 actualizarBarraDeVida(pgbVida1, nuevaVidaJugador, pokemonJugador.getVida());
@@ -170,6 +169,13 @@ public class Combate extends JFrame {
             agregarAlLog("¡" + pokemonOponente.getNombre() + " ha sido derrotado!");
             JOptionPane.showMessageDialog(this, "¡Felicidades! ¡Has ganado el combate!", "Victoria", JOptionPane.INFORMATION_MESSAGE);
             deshabilitarBotonesAtaque();
+
+            // --- CÓDIGO AÑADIDO ---
+            // Vuelve al menú principal después de ganar
+            MenuPrincipal menu = new MenuPrincipal();
+            menu.setVisible(true);
+            dispose(); // Cierra la ventana de combate
+
             return true;
         }
         if (pgbVida1.getValue() <= 0) {
