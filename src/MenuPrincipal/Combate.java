@@ -57,21 +57,16 @@ public class Combate extends JFrame {
         cargarImagen(lbPokemonImg2, pokemonOponente.getRutaImagen());
         actualizarBarraDeVida(pgbVida1, pokemonJugador.getVida(), pokemonJugador.getVida());
         actualizarBarraDeVida(pgbVida2, pokemonOponente.getVida(), pokemonOponente.getVida());
-        if (pokemonJugador.getAtaques().size() > 0)
-            ataque1Button.setText(pokemonJugador.getAtaques().get(0).getNombre());
-        if (pokemonJugador.getAtaques().size() > 1)
-            ataque2Button.setText(pokemonJugador.getAtaques().get(1).getNombre());
-        if (pokemonJugador.getAtaques().size() > 2)
-            ataque3Button.setText(pokemonJugador.getAtaques().get(2).getNombre());
+        if (pokemonJugador.getAtaques().size() > 0) ataque1Button.setText(pokemonJugador.getAtaques().get(0).getNombre());
+        if (pokemonJugador.getAtaques().size() > 1) ataque2Button.setText(pokemonJugador.getAtaques().get(1).getNombre());
+        if (pokemonJugador.getAtaques().size() > 2) ataque3Button.setText(pokemonJugador.getAtaques().get(2).getNombre());
         agregarAlLog("¡Un " + pokemonOponente.getNombre() + " salvaje apareció!");
         agregarAlLog("¡Adelante, " + pokemonJugador.getNombre() + "!");
         setupButtonListeners();
     }
 
     private void cargarImagen(JLabel label, String path) {
-        if (label == null) {
-            return;
-        }
+        if (label == null) { return; }
         java.net.URL imgURL = getClass().getResource(path);
         if (imgURL != null) {
             ImageIcon originalIcon = new ImageIcon(imgURL);
@@ -170,11 +165,9 @@ public class Combate extends JFrame {
             JOptionPane.showMessageDialog(this, "¡Felicidades! ¡Has ganado el combate!", "Victoria", JOptionPane.INFORMATION_MESSAGE);
             deshabilitarBotonesAtaque();
 
-            // --- CÓDIGO AÑADIDO ---
-            // Vuelve al menú principal después de ganar
             MenuPrincipal menu = new MenuPrincipal();
             menu.setVisible(true);
-            dispose(); // Cierra la ventana de combate
+            dispose();
 
             return true;
         }
@@ -182,6 +175,13 @@ public class Combate extends JFrame {
             agregarAlLog("¡" + pokemonJugador.getNombre() + " no puede continuar!");
             JOptionPane.showMessageDialog(this, "¡Has sido derrotado! " + pokemonOponente.getNombre() + " gana.", "Derrota", JOptionPane.ERROR_MESSAGE);
             deshabilitarBotonesAtaque();
+
+            // --- CÓDIGO AÑADIDO ---
+            // Vuelve al menú principal después de perder
+            MenuPrincipal menu = new MenuPrincipal();
+            menu.setVisible(true);
+            dispose(); // Cierra la ventana de combate
+
             return true;
         }
         return false;
